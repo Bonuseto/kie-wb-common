@@ -18,7 +18,6 @@ package org.kie.workbench.common.dmn.backend.definition.v1_1;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import org.kie.workbench.common.dmn.api.definition.v1_1.ItemDefinition;
 import org.kie.workbench.common.dmn.api.definition.v1_1.UnaryTests;

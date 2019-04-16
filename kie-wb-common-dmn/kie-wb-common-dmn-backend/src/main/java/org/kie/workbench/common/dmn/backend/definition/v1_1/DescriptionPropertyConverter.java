@@ -21,8 +21,7 @@ import org.kie.workbench.common.stunner.core.util.StringUtils;
 
 public class DescriptionPropertyConverter {
 
-    public static Description
-    wbFromDMN(final String description) {
+    public static Description wbFromDMN(final String description) {
         if (description == null) {
             return new Description("");
         } else {
