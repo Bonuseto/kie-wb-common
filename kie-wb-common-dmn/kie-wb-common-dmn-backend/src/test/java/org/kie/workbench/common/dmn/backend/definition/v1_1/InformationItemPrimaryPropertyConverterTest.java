@@ -16,22 +16,17 @@
 
 package org.kie.workbench.common.dmn.backend.definition.v1_1;
 
-import java.util.Optional;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.dmn.model.api.InformationItem;
 import org.kie.dmn.model.v1_2.TInformationItem;
 import org.kie.workbench.common.dmn.api.definition.v1_1.InformationItemPrimary;
 import org.kie.workbench.common.dmn.api.definition.v1_1.InputData;
+import org.kie.workbench.common.dmn.api.definition.v1_1.NamedElement;
 import org.kie.workbench.common.dmn.api.property.dmn.Id;
 import org.kie.workbench.common.dmn.api.property.dmn.Name;
 import org.kie.workbench.common.dmn.api.property.dmn.QName;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.stubbing.OngoingStubbing;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -39,7 +34,6 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
-//@PrepareForTest({QNamePropertyConverter.class, InformationItemPrimaryPropertyConverter.class})
 @RunWith(MockitoJUnitRunner.class)
 public class InformationItemPrimaryPropertyConverterTest {
 
@@ -57,24 +51,23 @@ public class InformationItemPrimaryPropertyConverterTest {
 
         final String id = "id";
         final Id expectedId = new Id(id);
-        final QName expectedTypeRef = mock(QName.class);
+        final String qNameNamespaceURI = "qName namespaceURI";
+        final String qNameLocalPart = "qName local part";
+        final String qNamePrefix = "qName local part";
+        final QName expectedTypeRef = new QName(qNameNamespaceURI, qNameLocalPart, qNamePrefix);
         final javax.xml.namespace.QName qName = mock(javax.xml.namespace.QName.class);
         final org.kie.dmn.model.api.InformationItem dmn = mock(org.kie.dmn.model.api.InformationItem.class);
 
         when(dmn.getId()).thenReturn(id);
         when(dmn.getTypeRef()).thenReturn(qName);
-        when(qName.getPrefix()).thenReturn("string");
-        when(qName.getLocalPart()).thenReturn("local part");
-        when(qName.getNamespaceURI()).thenReturn("");
 
-        // PowerMockito.mockStatic(QNamePropertyConverter.class);
-        // PowerMockito.
-        // when(QNamePropertyConverter.wbFromDMN(qName, dmn)).thenReturn(expectedTypeRef);
+        when(qName.getNamespaceURI()).thenReturn(qNameNamespaceURI);
+        when(qName.getLocalPart()).thenReturn(qNameLocalPart);
+        when(qName.getPrefix()).thenReturn(qNamePrefix);
 
         final InformationItemPrimary informationItemPrimary = InformationItemPrimaryPropertyConverter.wbFromDMN(dmn);
         final Id actualId = informationItemPrimary.getId();
         final QName actualTypeRef = informationItemPrimary.getTypeRef();
-        // final QName actualTypeRef = mock(QName.class);
 
         assertEquals(expectedId, actualId);
         assertEquals(expectedTypeRef, actualTypeRef);
@@ -95,20 +88,26 @@ public class InformationItemPrimaryPropertyConverterTest {
         final String expectedId = "id";
         final String expectedName = "name";
         final Id id = new Id(expectedId);
+        final Name name = new Name(expectedName);
+        final String qNameNamespaceURI = "qName namespaceURI";
+        final String qNameLocalPart = "qName local part";
+        final String qNamePrefix = "qName local part";
         final InformationItemPrimary wb = mock(InformationItemPrimary.class);
         final QName qName = mock(QName.class);
-        final javax.xml.namespace.QName expectedQName = mock(javax.xml.namespace.QName.class);
-        final Optional<javax.xml.namespace.QName> optionalExpectedQName = Optional.of(expectedQName);
-        final InformationItemPrimaryPropertyConverter inf = new InformationItemPrimaryPropertyConverter();
+        final javax.xml.namespace.QName expectedQName = new javax.xml.namespace.QName(qNameNamespaceURI, qNameLocalPart, qNamePrefix);
+        final NamedElement parentElement = mock(NamedElement.class);
 
         when(wb.getId()).thenReturn(id);
         when(wb.getTypeRef()).thenReturn(qName);
+        when(wb.getParent()).thenReturn(parentElement);
 
-        PowerMockito.stub(PowerMockito.method(InformationItemPrimaryPropertyConverter.class, "getName", InformationItemPrimary.class)).toReturn(expectedName);
-        PowerMockito.stub(PowerMockito.method(QNamePropertyConverter.class, "dmnFromWB", QName.class)).toReturn(optionalExpectedQName);
+        when(parentElement.getName()).thenReturn(name);
+
+        when(qName.getNamespaceURI()).thenReturn(qNameNamespaceURI);
+        when(qName.getLocalPart()).thenReturn(qNameLocalPart);
+        when(qName.getPrefix()).thenReturn(qNamePrefix);
 
         final TInformationItem informationItem = InformationItemPrimaryPropertyConverter.dmnFromWB(wb);
-        when(informationItem.getName()).thenReturn("name");
         final String actualId = informationItem.getId();
         final String actualName = informationItem.getName();
         final javax.xml.namespace.QName actualQName = informationItem.getTypeRef();
