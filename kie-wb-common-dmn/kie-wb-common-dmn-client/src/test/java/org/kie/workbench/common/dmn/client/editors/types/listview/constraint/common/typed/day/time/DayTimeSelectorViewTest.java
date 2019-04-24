@@ -29,7 +29,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.workbench.common.dmn.client.editors.types.listview.constraint.common.typed.common.MinMaxValueHelper;
 import org.mockito.Mock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -45,10 +44,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(LienzoMockitoTestRunner.class)
-@PrepareForTest({MinMaxValueHelper.class})
 public class DayTimeSelectorViewTest {
 
-    //    @Spy
+    @Mock
     private HTMLInputElement daysInput;
 
     @Mock

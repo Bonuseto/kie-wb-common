@@ -40,7 +40,6 @@ import static org.kie.workbench.common.dmn.backend.definition.v1_1.ItemDefinitio
 import static org.kie.workbench.common.dmn.backend.definition.v1_1.ItemDefinitionPropertyConverter.wbDescriptionFromDMN;
 import static org.kie.workbench.common.dmn.backend.definition.v1_1.ItemDefinitionPropertyConverter.wbFromDMN;
 import static org.kie.workbench.common.dmn.backend.definition.v1_1.ItemDefinitionPropertyConverter.wbTypeRefFromDMN;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.validateMockitoUsage;
@@ -67,8 +66,11 @@ public class ItemDefinitionPropertyConverterTest {
         final boolean expectedIsCollection = true;
         final String description = "description";
         final boolean expectedAllowOnlyVisualChange = false;
+        final String qNameNamespaceURI = "qName namespaceURI";
+        final String qNameLocalPart = "qName local part";
+        final String qNamePrefix = "qName prefix";
         final Description expectedDescription = new Description(description);
-        final javax.xml.namespace.QName expectedTypeRef = new javax.xml.namespace.QName("string", "string", "string");
+        final javax.xml.namespace.QName expectedTypeRef = new javax.xml.namespace.QName(qNameNamespaceURI, qNameLocalPart, qNamePrefix);
 
         when(dmn.getId()).thenReturn(id);
         when(dmn.getName()).thenReturn(name);
@@ -108,8 +110,11 @@ public class ItemDefinitionPropertyConverterTest {
         final String expectedTypeLanguage = "typeLanguage";
         final boolean expectedIsCollection = true;
         final String description = "description";
+        final String qNameNamespaceURI = "qName namespaceURI";
+        final String qNameLocalPart = "qName local part";
+        final String qNamePrefix = "qName prefix";
         final Description expectedDescription = new Description(description);
-        final QName expectedTypeRef = new QName("string", "string", "string");
+        final QName expectedTypeRef = new QName(qNameNamespaceURI, qNameLocalPart, qNamePrefix);
         final ItemDefinition expectedWbParent = new ItemDefinition();
         final ItemDefinition wbChild = new ItemDefinition(expectedId, expectedDescription, expectedName, null, null, null, expectedTypeLanguage, expectedIsCollection);
         final ItemDefinition wb = new ItemDefinition();
@@ -136,7 +141,7 @@ public class ItemDefinitionPropertyConverterTest {
     public void testSetUnaryTestsWhenUnaryTestsIsNotNull() {
 
         final ItemDefinition wb = mock(ItemDefinition.class);
-        ArgumentCaptor<UnaryTests> argument = ArgumentCaptor.forClass(UnaryTests.class);
+        final ArgumentCaptor<UnaryTests> argument = ArgumentCaptor.forClass(UnaryTests.class);
         final org.kie.dmn.model.api.ItemDefinition dmn = mock(org.kie.dmn.model.api.ItemDefinition.class);
         final org.kie.dmn.model.api.UnaryTests dmnAllowedValues = mock(org.kie.dmn.model.api.UnaryTests.class);
 
@@ -144,7 +149,6 @@ public class ItemDefinitionPropertyConverterTest {
 
         setUnaryTests(wb, dmn);
 
-        verify(wb).setAllowedValues(any(UnaryTests.class));
         verify(wb).setAllowedValues(argument.capture());
         assertEquals(wb, argument.getValue().getParent());
     }

@@ -32,7 +32,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InformationItemPrimaryPropertyConverterTest {
@@ -53,7 +53,7 @@ public class InformationItemPrimaryPropertyConverterTest {
         final Id expectedId = new Id(id);
         final String qNameNamespaceURI = "qName namespaceURI";
         final String qNameLocalPart = "qName local part";
-        final String qNamePrefix = "qName local part";
+        final String qNamePrefix = "qName prefix";
         final QName expectedTypeRef = new QName(qNameNamespaceURI, qNameLocalPart, qNamePrefix);
         final javax.xml.namespace.QName qName = mock(javax.xml.namespace.QName.class);
         final org.kie.dmn.model.api.InformationItem dmn = mock(org.kie.dmn.model.api.InformationItem.class);
@@ -91,7 +91,7 @@ public class InformationItemPrimaryPropertyConverterTest {
         final Name name = new Name(expectedName);
         final String qNameNamespaceURI = "qName namespaceURI";
         final String qNameLocalPart = "qName local part";
-        final String qNamePrefix = "qName local part";
+        final String qNamePrefix = "qName prefix";
         final InformationItemPrimary wb = mock(InformationItemPrimary.class);
         final QName qName = mock(QName.class);
         final javax.xml.namespace.QName expectedQName = new javax.xml.namespace.QName(qNameNamespaceURI, qNameLocalPart, qNamePrefix);
