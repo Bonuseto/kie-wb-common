@@ -192,7 +192,7 @@ public class ItemDefinitionPropertyConverterTest {
     @Test
     public void testWbTypeRefFromDMNWhenQNameIsNotUndefined() {
 
-        final String qNameLocalPart = "qName local part";
+        final String qNameLocalPart = "string";
         final String qNamePrefix = "qName prefix";
 
         final org.kie.dmn.model.api.ItemDefinition dmn = mock(org.kie.dmn.model.api.ItemDefinition.class);
