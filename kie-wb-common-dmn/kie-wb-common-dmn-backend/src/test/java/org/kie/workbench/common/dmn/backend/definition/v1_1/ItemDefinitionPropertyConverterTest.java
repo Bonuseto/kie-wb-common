@@ -104,37 +104,30 @@ public class ItemDefinitionPropertyConverterTest {
     public void testSetItemComponent() {
 
         final String id = "id";
-        final String name = "string";
-        final Id expectedId = new Id(id);
-        final Name expectedName = new Name(name);
-        final String expectedTypeLanguage = "typeLanguage";
-        final boolean expectedIsCollection = true;
+        final String name = "name";
+        final String typeLanguage = "typeLanguage";
+        final boolean isCollection = true;
         final String description = "description";
-        final String qNameNamespaceURI = "qName namespaceURI";
-        final String qNameLocalPart = "qName local part";
-        final String qNamePrefix = "qName prefix";
-        final Description expectedDescription = new Description(description);
-        final QName expectedTypeRef = new QName(qNameNamespaceURI, qNameLocalPart, qNamePrefix);
-        final ItemDefinition expectedWbParent = new ItemDefinition();
-        final ItemDefinition wbChild = new ItemDefinition(expectedId, expectedDescription, expectedName, null, null, null, expectedTypeLanguage, expectedIsCollection);
+        final ItemDefinition expectedWbChild = new ItemDefinition(new Id(id), new Description(description), new Name(name), null, null, null, typeLanguage, isCollection);
         final ItemDefinition wb = new ItemDefinition();
         final org.kie.dmn.model.api.ItemDefinition dmn = mock(org.kie.dmn.model.api.ItemDefinition.class);
         final org.kie.dmn.model.api.ItemDefinition dmnChild = mock(org.kie.dmn.model.api.ItemDefinition.class);
 
         when(dmnChild.getId()).thenReturn(id);
         when(dmnChild.getName()).thenReturn(name);
-        when(dmnChild.getTypeLanguage()).thenReturn(expectedTypeLanguage);
-        when(dmnChild.isIsCollection()).thenReturn(expectedIsCollection);
+        when(dmnChild.getTypeLanguage()).thenReturn(typeLanguage);
+        when(dmnChild.isIsCollection()).thenReturn(isCollection);
         when(dmnChild.getDescription()).thenReturn(description);
         when(dmnChild.getTypeRef()).thenReturn(null);
         when(dmn.getItemComponent()).thenReturn(singletonList(dmnChild));
 
         setItemComponent(wb, dmn);
 
-        final List<ItemDefinition> expectedItemDefinitions = singletonList(wbChild);
+        final List<ItemDefinition> expectedItemDefinitions = singletonList(expectedWbChild);
         final List<ItemDefinition> actualItemDefinitions = wb.getItemComponent();
 
         assertEquals(expectedItemDefinitions, actualItemDefinitions);
+        assertEquals(wb, actualItemDefinitions.get(0).getParent());
     }
 
     @Test
@@ -199,13 +192,16 @@ public class ItemDefinitionPropertyConverterTest {
     @Test
     public void testWbTypeRefFromDMNWhenQNameIsNotUndefined() {
 
+        final String qNameLocalPart = "qName local part";
+        final String qNamePrefix = "qName prefix";
+
         final org.kie.dmn.model.api.ItemDefinition dmn = mock(org.kie.dmn.model.api.ItemDefinition.class);
         final javax.xml.namespace.QName dmnQName = mock(javax.xml.namespace.QName.class);
         final QName expectedQName = BuiltInType.STRING.asQName();
 
         when(dmn.getTypeRef()).thenReturn(dmnQName);
-        when(dmnQName.getLocalPart()).thenReturn("string");
-        when(dmnQName.getPrefix()).thenReturn("string");
+        when(dmnQName.getLocalPart()).thenReturn(qNameLocalPart);
+        when(dmnQName.getPrefix()).thenReturn(qNamePrefix);
 
         final QName actualQName = wbTypeRefFromDMN(dmn);
 
@@ -216,22 +212,18 @@ public class ItemDefinitionPropertyConverterTest {
     public void testWbChildFromDMNWhenWbChildIsNotNull() {
 
         final String id = "id";
-        final String name = "string";
-        final Id expectedId = new Id(id);
-        final Name expectedName = new Name(name);
-        final String expectedTypeLanguage = "typeLanguage";
-        final boolean expectedIsCollection = true;
+        final String name = "name";
+        final String typeLanguage = "typeLanguage";
+        final boolean isCollection = true;
         final String description = "description";
-        final Description expectedDescription = new Description(description);
-        final QName expectedTypeRef = new QName("string", "string", "string");
         final ItemDefinition expectedWbParent = new ItemDefinition();
-        final ItemDefinition expectedWbChild = new ItemDefinition(expectedId, expectedDescription, expectedName, null, null, null, expectedTypeLanguage, expectedIsCollection);
+        final ItemDefinition expectedWbChild = new ItemDefinition(new Id(id), new Description(description), new Name(name), null, null, null, typeLanguage, isCollection);
         final org.kie.dmn.model.api.ItemDefinition dmnChild = mock(org.kie.dmn.model.api.ItemDefinition.class);
 
         when(dmnChild.getId()).thenReturn(id);
         when(dmnChild.getName()).thenReturn(name);
-        when(dmnChild.getTypeLanguage()).thenReturn(expectedTypeLanguage);
-        when(dmnChild.isIsCollection()).thenReturn(expectedIsCollection);
+        when(dmnChild.getTypeLanguage()).thenReturn(typeLanguage);
+        when(dmnChild.isIsCollection()).thenReturn(isCollection);
         when(dmnChild.getDescription()).thenReturn(description);
         when(dmnChild.getTypeRef()).thenReturn(null);
 
