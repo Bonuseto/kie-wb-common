@@ -52,7 +52,6 @@ public class IncludedModelsFactory {
 
     /**
      * Wrapped due to test
-     * @return
      */
 
     String uuidWrapper() {
