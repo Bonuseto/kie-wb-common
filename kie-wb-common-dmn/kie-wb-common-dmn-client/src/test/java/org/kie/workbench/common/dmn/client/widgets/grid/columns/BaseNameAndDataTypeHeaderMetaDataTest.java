@@ -25,8 +25,10 @@ import org.junit.Test;
 import org.kie.workbench.common.dmn.api.definition.HasName;
 import org.kie.workbench.common.dmn.api.definition.HasTypeRef;
 import org.kie.workbench.common.dmn.api.definition.v1_1.Decision;
+import org.kie.workbench.common.dmn.api.definition.v1_1.InformationItemPrimary;
 import org.kie.workbench.common.dmn.api.property.dmn.Name;
 import org.kie.workbench.common.dmn.api.property.dmn.QName;
+import org.kie.workbench.common.dmn.api.property.dmn.types.BuiltInType;
 import org.kie.workbench.common.dmn.client.editors.types.NameAndDataTypePopoverView;
 import org.kie.workbench.common.dmn.client.widgets.grid.BaseExpressionGridTheme;
 import org.kie.workbench.common.dmn.client.widgets.grid.controls.container.CellEditorControlsView;
@@ -86,6 +88,8 @@ public abstract class BaseNameAndDataTypeHeaderMetaDataTest {
 
     @Mock
     protected NameAndDataTypeHeaderMetaData metaData;
+
+    protected Decision hasExpression = new Decision();
 
     protected abstract void setup(final Optional<HasName> hasName);
 
@@ -215,10 +219,13 @@ public abstract class BaseNameAndDataTypeHeaderMetaDataTest {
     @Test
     public void testRender() {
 
-        final QName typeRef = mock(QName.class);
+        final QName typeRef = BuiltInType.DATE.asQName();
         final GridRenderer renderer = mock(GridRenderer.class);
         final GridRendererTheme theme = mock(GridRendererTheme.class);
         final Text tName = mock(Text.class);
+        final InformationItemPrimary hasExpressionVariable = new InformationItemPrimary();
+        hasExpressionVariable.setTypeRef(typeRef);
+        hasExpression.setVariable(hasExpressionVariable);
         final Decision decision = new Decision();
         decision.setName(NAME);
         setup(Optional.of(decision));

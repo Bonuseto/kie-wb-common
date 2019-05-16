@@ -21,15 +21,12 @@ import java.util.Optional;
 import com.ait.lienzo.test.LienzoMockitoTestRunner;
 import org.junit.runner.RunWith;
 import org.kie.workbench.common.dmn.api.definition.HasName;
-import org.kie.workbench.common.dmn.api.definition.v1_1.Decision;
 import org.kie.workbench.common.dmn.api.property.dmn.QName;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(LienzoMockitoTestRunner.class)
 public class NameAndDataTypeHeaderMetaDataHasExpressionTest extends BaseNameAndDataTypeHeaderMetaDataTest {
-
-    private Decision hasExpression = new Decision();
 
     public void setup(final Optional<HasName> hasName) {
         this.metaData = new NameAndDataTypeHeaderMetaData(hasExpression,
